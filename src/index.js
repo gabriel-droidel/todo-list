@@ -1,3 +1,6 @@
-import { assignItems } from "./handleLogic";
+// import { testingItems } from './testing';
+import { generateDashBoardTemplate, generateButtons } from './pages/dashboard';
 
-assignItems();
+// testingItems();
+generateButtons();
+generateDashBoardTemplate();
