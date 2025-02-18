@@ -1,6 +1,4 @@
-// import { testingItems } from './testing';
-import { generateDashBoardTemplate, generateButtons } from './pages/dashboard';
+import { generateDashBoardTemplate } from './pages/dashboard';
 
-// testingItems();
-generateButtons();
 generateDashBoardTemplate();
+

@@ -1,21 +1,43 @@
-const list = []; // array where all projects are stored
+// Module to manage projects
+const projectManager = (() => {
+	let projects = [];
+	let nextId = 0; // for generating unique IDs
 
-function createProject(name) {
-	// create a project that has an array to store todos
-	const project = { name, items: [] };
-	project.id = list.length;
-	list.push(project);
-	return project;
-}
+	// Helper function to generate a new project ID
+	const generateProjectId = () => nextId++;
 
-function assignProject(item, projectId) {
-	// assign a project to a todo, set default project instead
-	const projectToAssign = list[projectId];
-	projectToAssign.items.push(item);
-	console.log(list);
-}
+	// Create a new project
+	const createProject = (name) => {
+		const project = {
+			id: generateProjectId(),
+			name,
+			items: [],
+		};
+		projects.push(project);
+		return project;
+	};
 
-const defaultProject = createProject('Default');
-const getProjectList = () => [...list];
+	// Assign a task to a project by its ID
+	const assignProject = (item, projectId) => {
+		const project = projects.find((project) => project.id == projectId);
+		project.items.push(item);
+	};
 
-export { defaultProject, getProjectList, createProject, assignProject,list };
+	// Get a list of all projects
+	const getProjectList = () => [...projects];
+
+	// Create a default project
+	const createDefaultProject = () => createProject('Default');
+
+	return {
+		createProject,
+		assignProject,
+		getProjectList,
+		createDefaultProject,
+	};
+})();
+
+const defaultProject = projectManager.createDefaultProject();
+console.log(projectManager.getProjectList())
+
+export { projectManager };
