@@ -3,6 +3,49 @@ import displayManager from './displayContent';
 import todoManager from '../todoManager';
 import { getCurrentDate } from '../helperFunctions';
 
+// todo functions //
+function createTodo() {
+	// get data from form and pass it to create todo function
+	document.addEventListener('todoAdded', (e) => {
+		const todoName = e.detail.name;
+		const todoDescription = e.detail.description;
+		let todoDate = e.detail.dueDate;
+		if (todoDate === '') {
+			todoDate = getCurrentDate(); //default to today date
+		}
+		const todoPriority = e.detail.priority;
+		console.log(todoPriority);
+		const todoItem = todoManager.create(
+			todoName,
+			todoDescription,
+			todoDate,
+			todoPriority
+		);
+		// assign todo list item to the specified project
+		const projectToAssign = projectManager
+			.getProjects()
+			.find((p) => p.id === Number(e.detail.projectId));
+		console.log(todoItem);
+		projectManager.assignProject(todoItem, projectToAssign);
+		refreshPage(); // reset display
+	});
+}
+
+function deleteTodoItem() {
+	document.addEventListener('todoDeleted', (e) => {
+		const todoId = e.detail.id;
+		const todoToDelete = projectManager
+			.getActiveProject()
+			.items.find((t) => t.id === Number(todoId));
+
+		if (todoToDelete) {
+			todoManager.deleteTodo(todoToDelete); // delete project
+			refreshPage(); // Re-render with the rest of the projects
+		}
+	});
+}
+
+// project functions //
 function createProject() {
 	// get data from form and pass it to the create project function
 	document.addEventListener('projectAdded', (e) => {
@@ -22,33 +65,6 @@ function editProject() {
 		projectManager.changeName(projectToEdit, newName);
 		console.log(projectToEdit);
 		refreshPage();
-	});
-}
-
-function createTodo() {
-	// get data from form and pass it to create todo function
-	document.addEventListener('todoAdded', (e) => {
-		const todoName = e.detail.name;
-		const todoDescription = e.detail.description;
-		let todoDate = e.detail.dueDate;
-		if (todoDate === '') {
-			todoDate = getCurrentDate();
-		}
-		const todoPriority = e.detail.priority;
-		console.log(todoPriority);
-		const todoItem = todoManager.create(
-			todoName,
-			todoDescription,
-			todoDate,
-			todoPriority
-		);
-		// assign todo list item to the specified project
-		const projectToAssign = projectManager
-			.getProjects()
-			.find((p) => p.id === Number(e.detail.projectId));
-		console.log(todoItem);
-		projectManager.assignProject(todoItem, projectToAssign);
-		refreshPage(); // reset display
 	});
 }
 
@@ -81,6 +97,7 @@ function deleteProjectOnPage() {
 	});
 }
 
+// Ui refresh
 function refreshPage() {
 	// refresh data and display every time a new project is created
 	const projects = projectManager.getProjects();
@@ -89,10 +106,12 @@ function refreshPage() {
 	displayManager.showTodos(activeProject.items);
 }
 
+// get Data
 function getProjects() {
 	return projectManager.getProjects();
 }
 
+// export function
 function getEventListeners() {
 	// create functions
 	createProject();
@@ -102,5 +121,6 @@ function getEventListeners() {
 	deleteProjectOnPage();
 	editProject();
 	// edit todos
+	deleteTodoItem();
 }
 export { getEventListeners, getProjects };

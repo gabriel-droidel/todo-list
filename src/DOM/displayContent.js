@@ -72,11 +72,27 @@ const displayManager = (function () {
 				if (key !== 'project' && key !== 'id') {
 					const item = document.createElement('p');
 					item.textContent = `${capitalize(key)} : ${value}`;
-					console.log(value);
 					listedTodo.append(item);
 				}
 			});
+			
+			//delete button
+			const deleteTodoBtn = document.createElement('button');
+			deleteTodoBtn.classList.add('deleteBtn');
+			deleteTodoBtn.textContent = 'X';
+			deleteTodoBtn.value = todo.id;
+			listedTodo.appendChild(deleteTodoBtn);
 			todosContainer.appendChild(listedTodo);
+
+			todosContainer.addEventListener('click', (event) => {
+				const selectedTodoId = event.target.value;
+				if (event.target.tagName === 'BUTTON') {
+					const eventDetails = new CustomEvent('todoDeleted', {
+						detail: { id: selectedTodoId },
+					});
+					document.dispatchEvent(eventDetails);
+				}
+			});
 		});
 	};
 
