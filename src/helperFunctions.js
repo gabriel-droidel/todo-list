@@ -9,5 +9,10 @@ function getCurrentDate() {
 		day < 10 ? '0' + day : day
 	}`;
 }
+function capitalize(word) {
+	const arrayedWord = [...word];
+	arrayedWord[0] = arrayedWord[0].toUpperCase();
+	return arrayedWord.join('');
+}
 
-export { getCurrentDate };
+export { getCurrentDate, capitalize };

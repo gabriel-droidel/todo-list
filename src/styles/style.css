@@ -1,0 +1,78 @@
+/* CSS Reset */
+html {
+	box-sizing: border-box;
+	font-size: 16px;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Page styling */
+
+body {
+	min-height: 100vh;
+	display: grid;
+	grid-template-rows: 100px 1fr;
+}
+
+#container {
+	display: grid;
+	grid-template-columns: minmax(250px, 1fr) 5fr;
+}
+
+header {
+	background-color: aquamarine;
+}
+
+.projects-container {
+	background-color: rgb(12, 238, 162);
+    padding:10px;
+}
+
+.todo-container {
+	background-color: rgb(189, 241, 224);
+    padding:10px;
+}
+
+.active-project {
+	background-color: green;
+	font-weight: bold;
+}
+.todos-list{
+    display: grid;
+    gap:10px;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+}
+
+.todos-list > *{
+    border:solid 1px rgb(55, 179, 137);
+    padding:10px;
+}
