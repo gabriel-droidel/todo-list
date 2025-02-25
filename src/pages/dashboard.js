@@ -1,5 +1,8 @@
 import '../styles/style.css';
-import { getProjectForm, getTodoForm } from '../DOM/forms';
+import getProjectForm from '../DOM/forms/projectForms';
+import getTodoForm from '../DOM/forms/todoForms';
+import projectManager from '../projectManager';
+import displayManager from '../DOM/displayContent';
 
 const containerDiv = document.querySelector('#container');
 const headerDiv = document.querySelector('header');
@@ -29,4 +32,14 @@ const dashboardManager = (function () {
 	return { generatePageLayout, generateButtons };
 })();
 
-export default dashboardManager;
+export function initializeDashboard() {
+	// Initialize layout and buttons
+	dashboardManager.generatePageLayout();
+	dashboardManager.generateButtons();
+
+	// Show projects and active todos
+	const projects = projectManager.getProjects();
+	const activeProject = projectManager.getActiveProject();
+	displayManager.showProjects(projects);
+	displayManager.showTodos(activeProject.items);
+}

@@ -37,9 +37,10 @@ const projectManager = (function () {
 
 	const deleteProject = (project) => {
 		// delete a project
-		const projectIndex = projects.findIndex((p) => p.id === project.id);
-		if (projectIndex != -1) projects.splice(projectIndex, 1);
-		console.log(projects);
+		if (project !== defaultProject) {
+			const projectIndex = projects.findIndex((p) => p.id === project.id);
+			if (projectIndex != -1) projects.splice(projectIndex, 1);
+		}
 	};
 
 	const changeName = (project, newName) => {

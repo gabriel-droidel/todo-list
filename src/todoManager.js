@@ -3,13 +3,12 @@ const todoManager = (function () {
 
 	const generateID = () => idCounter++; //increment when adding a new ID
 
-	const create = (name, description, dueDate, project, priority) => {
+	const create = (name, description, dueDate, priority) => {
 		// create a todo list item and track it with a counter
 		const todo = {
 			name,
 			description,
 			dueDate,
-			project,
 			priority,
 			id: generateID(),
 		};
