@@ -85,18 +85,21 @@ function editTodoForm(todo) {
 		if (nameInput.value) {
 			document.dispatchEvent(event);
 			dialog.close();
-			nameInput.value = '';
-			descriptionInput.value = '';
-			dateInput.value = '';
-			prioritySelection.value = 'Low';
+			resetInput();
 		}
 	});
 
 	// Cancel Button
 	const cancelBtn = document.createElement('button');
 	cancelBtn.textContent = 'Cancel';
-	cancelBtn.addEventListener('click', () => {
-		dialog.close();
+	cancelBtn.addEventListener('click', (e) => {
+		keepUnchanged(e);
+	});
+
+	dialog.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			keepUnchanged(e);
+		}
 	});
 
 	form.append(
@@ -109,6 +112,33 @@ function editTodoForm(todo) {
 		cancelBtn
 	);
 	dialog.appendChild(form);
+
+	function keepUnchanged(e) {
+		e.preventDefault();
+		const event = new CustomEvent('todoEdited', {
+			// event to trigger when a project is added
+			detail: {
+				obj: todo,
+				name: todo.name,
+				description: todo.description,
+				dueDate: todo.dueDate,
+				projectId: todo.project.id,
+				priority: todo.priority,
+			},
+		});
+		if (nameInput.value) {
+			document.dispatchEvent(event);
+			dialog.close();
+			resetInput();
+		}
+	}
+
+	function resetInput() {
+		nameInput.value = '';
+		descriptionInput.value = '';
+		dateInput.value = '';
+		prioritySelection.value = 'Low';
+	}
 }
 
 export default editTodoForm;

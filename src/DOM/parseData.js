@@ -49,9 +49,6 @@ function todoListeners() {
 		document.addEventListener('todoEdited', (e) => {
 			const currentProject = projectManager.getActiveProject();
 			const { obj, name, description, dueDate, projectId, priority } = e.detail;
-			console.log(`todo object = > ${e.detail.obj}`);
-			console.log('Current project items:', currentProject.items);
-
 			todoManager.edit(obj, name, description, dueDate, priority);
 
 			const projectToAssign = projectManager
@@ -59,14 +56,29 @@ function todoListeners() {
 				.find((p) => p.id === Number(e.detail.projectId));
 			if (currentProject.id !== projectId)
 				todoManager.changeProject(obj, projectToAssign);
-			console.log('Current project items:', currentProject.items);
+
 			refreshPage(); // Refresh the UI
+		});
+	}
+
+	function markCompleteItem() {
+		document.addEventListener('todoChecked', (e) => {
+			const todoId = e.detail.id;
+			const todoToMark = projectManager
+				.getActiveProject()
+				.items.find((t) => t.id === Number(todoId));
+
+			todoManager.switchCompleteStatus(todoToMark);
+			todoToMark.completed;
+			
+			refreshPage();
 		});
 	}
 
 	createTodo();
 	deleteTodoItem();
 	editTodoItem();
+	markCompleteItem();
 }
 function projectListeners() {
 	function createProject() {
@@ -119,6 +131,7 @@ function projectListeners() {
 			}
 		});
 	}
+
 	createProject();
 	editProject();
 	changeActiveProject();

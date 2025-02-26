@@ -11,6 +11,7 @@ const todoManager = (function () {
 			dueDate,
 			priority,
 			id: generateID(),
+			completed: false,
 		};
 
 		return todo;
@@ -51,12 +52,17 @@ const todoManager = (function () {
 		todo.priority = priority;
 	};
 
+	const switchCompleteStatus = (todo) => {
+		todo.completed = !todo.completed;
+	};
+	
 	return {
 		create,
 		assignProject,
 		deleteTodo,
 		edit,
 		changeProject,
+		switchCompleteStatus,
 	};
 })();
 

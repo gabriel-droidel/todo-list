@@ -68,6 +68,7 @@ const displayManager = (function () {
 		todoList.forEach((todo) => {
 			console.log(todo);
 			const listedTodo = document.createElement('li');
+
 			Object.entries(todo).forEach(([key, value]) => {
 				// generate an item by looping through the properties of each to do
 				if (
@@ -105,10 +106,29 @@ const displayManager = (function () {
 			listedTodo.appendChild(deleteTodoBtn);
 			todosContainer.appendChild(listedTodo);
 
+			// checkbox
+			const checkbox = document.createElement('input');
+			checkbox.type = 'checkbox';
+			checkbox.value = todo.id;
+			checkbox.checked = todo.completed;
+			listedTodo.append(checkbox);
+
 			todosContainer.addEventListener('click', (event) => {
 				const selectedTodoId = event.target.value;
 				if (event.target.tagName === 'BUTTON') {
 					const eventDetails = new CustomEvent('todoDeleted', {
+						detail: { id: selectedTodoId },
+					});
+					document.dispatchEvent(eventDetails);
+				}
+			});
+			todosContainer.addEventListener('change', (event) => {
+				const selectedTodoId = event.target.value;
+				if (
+					event.target.tagName === 'INPUT' &&
+					event.target.type === 'checkbox'
+				) {
+					const eventDetails = new CustomEvent('todoChecked', {
 						detail: { id: selectedTodoId },
 					});
 					document.dispatchEvent(eventDetails);
