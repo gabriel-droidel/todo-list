@@ -16,6 +16,7 @@ function getProjectForm() {
 	// Add Button
 	const submitProjectBtn = document.createElement('button');
 	submitProjectBtn.textContent = 'Add Project';
+    submitProjectBtn.setAttribute('type', 'submit'); // Make it a submit button
 
 	submitProjectBtn.addEventListener('click', (e) => {
 		e.preventDefault();
@@ -28,6 +29,7 @@ function getProjectForm() {
 		if (nameInput.value) {
 			document.dispatchEvent(event);
 			dialog.close();
+			nameInput.value = '';
 		}
 	});
 

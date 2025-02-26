@@ -54,25 +54,29 @@ header {
 
 .projects-container {
 	background-color: rgb(12, 238, 162);
-    padding:10px;
+	padding: 10px;
 }
 
 .todo-container {
 	background-color: rgb(189, 241, 224);
-    padding:10px;
+	padding: 10px;
 }
 
 .active-project {
 	background-color: green;
 	font-weight: bold;
 }
-.todos-list{
-    display: grid;
-    gap:10px;
-    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+.todos-list {
+	display: grid;
+	gap: 10px;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-.todos-list > *{
-    border:solid 1px rgb(55, 179, 137);
-    padding:10px;
+.todos-list > * {
+	border: solid 1px rgb(55, 179, 137);
+	padding: 10px;
+}
+
+.selected {
+	background-color: grey;
 }

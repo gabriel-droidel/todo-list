@@ -1,6 +1,6 @@
 import { getProjects } from '../parseData'; //get project list
 
-function getTodoForm(todo) {
+function editTodoForm(todo) {
 	const dialog = document.createElement('dialog');
 	dialog.classList.add('todo-dialog');
 	const form = document.createElement('form');
@@ -18,7 +18,7 @@ function getTodoForm(todo) {
 	const descriptionInput = document.createElement('TEXTAREA');
 	descriptionInput.setAttribute('maxLength', 200);
 	descriptionInput.setAttribute('placeholder', 'Description...');
-	descriptionInput.setAttribute('value', todo.description);
+	descriptionInput.textContent = todo.description;
 
 	// Calendar input
 	const dateInput = document.createElement('input');
@@ -32,10 +32,11 @@ function getTodoForm(todo) {
 	selectInput.setAttribute('name', 'project');
 
 	// options
-	const defaultOption = document.createElement('option');
-	defaultOption.value = todo.project.name;
-	defaultOption.textContent = 'Select a Project';
-	selectInput.appendChild(defaultOption);
+	const selected = document.createElement('option');
+	selected.value = todo.project.id;
+	selected.textContent = todo.project.name;
+	selected.classList.add('selected');
+	selectInput.appendChild(selected);
 	const projects = getProjects();
 
 	projects.forEach((project) => {
@@ -50,6 +51,11 @@ function getTodoForm(todo) {
 	const prioritySelection = document.createElement('select');
 	prioritySelection.setAttribute('name', 'priority');
 
+	const selectedPriority = document.createElement('option');
+	selectedPriority.value = todo.priority;
+	selectedPriority.textContent = todo.priority;
+	selectedPriority.classList.add('selected');
+	prioritySelection.appendChild(selectedPriority);
 	// options //
 	const priorityOptions = ['Low', 'Medium', 'High'];
 	priorityOptions.forEach((type) => {
@@ -61,13 +67,14 @@ function getTodoForm(todo) {
 
 	// Add Button
 	const submitTodoBtn = document.createElement('button');
-	submitTodoBtn.textContent = 'Add Todo';
-
+	submitTodoBtn.textContent = 'Edit';
+	submitTodoBtn.setAttribute('type', 'submit'); // Make it a submit button
 	submitTodoBtn.addEventListener('click', (e) => {
 		e.preventDefault();
-		const event = new CustomEvent('todoAdded', {
+		const event = new CustomEvent('todoEdited', {
 			// event to trigger when a project is added
 			detail: {
+				obj: todo,
 				name: nameInput.value,
 				description: descriptionInput.value,
 				dueDate: dateInput.value,
@@ -81,7 +88,7 @@ function getTodoForm(todo) {
 			nameInput.value = '';
 			descriptionInput.value = '';
 			dateInput.value = '';
-			prioritySelection.value = 'Low'; 
+			prioritySelection.value = 'Low';
 		}
 	});
 
@@ -104,4 +111,4 @@ function getTodoForm(todo) {
 	dialog.appendChild(form);
 }
 
-export default getTodoForm;
+export default editTodoForm;

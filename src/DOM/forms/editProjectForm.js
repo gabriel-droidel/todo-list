@@ -17,6 +17,7 @@ function editProjectForm(project) {
 	// Add Button
 	const submitProjectBtn = document.createElement('button');
 	submitProjectBtn.textContent = 'Edit';
+	submitProjectBtn.setAttribute('type', 'submit'); // Make it a submit button
 
 	submitProjectBtn.addEventListener('click', (e) => {
 		e.preventDefault();
@@ -38,7 +39,15 @@ function editProjectForm(project) {
 	const cancelBtn = document.createElement('button');
 	cancelBtn.textContent = 'Cancel';
 	cancelBtn.addEventListener('click', () => {
+		// Close the dialog without deleting anything
 		dialog.close();
+	});
+
+	// Close the dialog on pressing ESC key without triggering submit or delete
+	dialog.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			dialog.close();
+		}
 	});
 
 	form.append(nameInput, submitProjectBtn, cancelBtn);

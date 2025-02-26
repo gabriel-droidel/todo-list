@@ -7,6 +7,9 @@ const projectManager = (function () {
 
 	const getProjects = () => [...projects]; // get a copy of the projects array
 
+	const getActiveProject = () =>
+		projects.find((project) => project.selected === true); //get the active project 
+
 	const create = (name) => {
 		// create project with input as its name
 		const project = { name, items: [], id: generateID(), selected: false };
@@ -22,11 +25,6 @@ const projectManager = (function () {
 	}; // create a default project where all todos will go by default
 
 	const defaultProject = createDefaultProject(); // initialize defaultProject
-
-	const assignProject = (todo, project = defaultProject) => {
-		project.items.push(todo);
-		todo.project = project;
-	};
 
 	const setActive = (project) => {
 		// set a project as active on the page
@@ -49,14 +47,10 @@ const projectManager = (function () {
 			project.name = newName;
 	};
 
-	const getActiveProject = () => {
-		return projects.find((project) => project.selected === true);
-	};
 	return {
 		create,
 		createDefaultProject,
 		getProjects,
-		assignProject,
 		setActive,
 		deleteProject,
 		changeName,

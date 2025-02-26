@@ -1,5 +1,6 @@
 import { capitalize } from '../helperFunctions';
 import editProjectForm from './forms/editProjectForm';
+import editTodoForm from './forms/editTodoForm';
 
 const displayManager = (function () {
 	// handle displaying projects on the main page
@@ -75,7 +76,13 @@ const displayManager = (function () {
 					listedTodo.append(item);
 				}
 			});
-			
+
+			// edit todo button
+			const editTodoBtn = document.createElement('button');
+			editTodoBtn.textContent = 'Edit';
+			editTodoBtn.addEventListener('click', () => editTodoForm(todo));
+			listedTodo.appendChild(editTodoBtn);
+
 			//delete button
 			const deleteTodoBtn = document.createElement('button');
 			deleteTodoBtn.classList.add('deleteBtn');

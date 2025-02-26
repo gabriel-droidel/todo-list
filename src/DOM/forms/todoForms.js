@@ -59,6 +59,7 @@ function getTodoForm() {
 	// Add Button
 	const submitTodoBtn = document.createElement('button');
 	submitTodoBtn.textContent = 'Add Todo';
+    submitTodoBtn.setAttribute('type', 'submit'); // Make it a submit button
 
 	submitTodoBtn.addEventListener('click', (e) => {
 		e.preventDefault();

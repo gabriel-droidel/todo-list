@@ -1,5 +1,6 @@
 import { initializeDashboard } from './pages/dashboard';
-import { getEventListeners } from './DOM/parseData';
+import { projectListeners, todoListeners } from './DOM/parseData';
 
 initializeDashboard();
-getEventListeners();
+projectListeners();
+todoListeners();
