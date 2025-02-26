@@ -70,12 +70,26 @@ const displayManager = (function () {
 			const listedTodo = document.createElement('li');
 			Object.entries(todo).forEach(([key, value]) => {
 				// generate an item by looping through the properties of each to do
-				if (key !== 'project' && key !== 'id') {
+				if (
+					key !== 'project' &&
+					key !== 'id' &&
+					key !== 'description' &&
+					key != 'priority'
+				) {
 					const item = document.createElement('p');
 					item.textContent = `${capitalize(key)} : ${value}`;
 					listedTodo.append(item);
 				}
 			});
+			// Remove all priority classes
+			listedTodo.classList.remove(
+				'low-priority',
+				'medium-priority',
+				'high-priority'
+			);
+
+			// Add the class corresponding to the current priority
+			listedTodo.classList.add(`${todo.priority.toLowerCase()}-priority`);
 
 			// edit todo button
 			const editTodoBtn = document.createElement('button');
