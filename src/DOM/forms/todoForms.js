@@ -1,4 +1,4 @@
-import { getProjects } from '../parseData'; //get project list
+import projectManager from '../../projectManager';
 
 function getTodoForm() {
 	const dialog = document.createElement('dialog');
@@ -30,10 +30,11 @@ function getTodoForm() {
 
 	// options
 	const defaultOption = document.createElement('option');
-	defaultOption.value = '';
-	defaultOption.textContent = 'Select a Project';
+	defaultOption.value = projectManager.getActiveProject().id;
+	defaultOption.textContent = projectManager.getActiveProject().name;
+	defaultOption.classList.add('selected');
 	selectInput.appendChild(defaultOption);
-	const projects = getProjects();
+	const projects = projectManager.getProjects();
 
 	projects.forEach((project) => {
 		const option = document.createElement('option');
@@ -59,7 +60,7 @@ function getTodoForm() {
 	// Add Button
 	const submitTodoBtn = document.createElement('button');
 	submitTodoBtn.textContent = 'Add Todo';
-    submitTodoBtn.setAttribute('type', 'submit'); // Make it a submit button
+	submitTodoBtn.setAttribute('type', 'submit'); // Make it a submit button
 
 	submitTodoBtn.addEventListener('click', (e) => {
 		e.preventDefault();
@@ -86,7 +87,8 @@ function getTodoForm() {
 	// Cancel Button
 	const cancelBtn = document.createElement('button');
 	cancelBtn.textContent = 'Cancel';
-	cancelBtn.addEventListener('click', () => {
+	cancelBtn.addEventListener('click', (e) => {
+		e.preventDefault();
 		dialog.close();
 	});
 

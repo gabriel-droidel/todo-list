@@ -1,4 +1,4 @@
-import { getProjects } from '../parseData'; //get project list
+import projectManager from '../../projectManager';
 
 function editTodoForm(todo) {
 	const dialog = document.createElement('dialog');
@@ -37,7 +37,7 @@ function editTodoForm(todo) {
 	selected.textContent = todo.project.name;
 	selected.classList.add('selected');
 	selectInput.appendChild(selected);
-	const projects = getProjects();
+	const projects = projectManager.getProjects();
 
 	projects.forEach((project) => {
 		const option = document.createElement('option');
@@ -68,11 +68,10 @@ function editTodoForm(todo) {
 	// Add Button
 	const submitTodoBtn = document.createElement('button');
 	submitTodoBtn.textContent = 'Edit';
-	submitTodoBtn.setAttribute('type', 'submit'); // Make it a submit button
 	submitTodoBtn.addEventListener('click', (e) => {
 		e.preventDefault();
 		const event = new CustomEvent('todoEdited', {
-			// event to trigger when a project is added
+			// event to trigger when a project is edited
 			detail: {
 				obj: todo,
 				name: nameInput.value,
@@ -93,12 +92,14 @@ function editTodoForm(todo) {
 	const cancelBtn = document.createElement('button');
 	cancelBtn.textContent = 'Cancel';
 	cancelBtn.addEventListener('click', (e) => {
-		keepUnchanged(e);
+		dialog.close();
+		resetInput();
 	});
 
 	dialog.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
-			keepUnchanged(e);
+			dialog.close();
+			resetInput();
 		}
 	});
 
@@ -112,26 +113,6 @@ function editTodoForm(todo) {
 		cancelBtn
 	);
 	dialog.appendChild(form);
-
-	function keepUnchanged(e) {
-		e.preventDefault();
-		const event = new CustomEvent('todoEdited', {
-			// event to trigger when a project is added
-			detail: {
-				obj: todo,
-				name: todo.name,
-				description: todo.description,
-				dueDate: todo.dueDate,
-				projectId: todo.project.id,
-				priority: todo.priority,
-			},
-		});
-		if (nameInput.value) {
-			document.dispatchEvent(event);
-			dialog.close();
-			resetInput();
-		}
-	}
 
 	function resetInput() {
 		nameInput.value = '';

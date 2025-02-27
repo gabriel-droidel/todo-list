@@ -21,6 +21,7 @@ function todoListeners() {
 				todoDate,
 				todoPriority
 			);
+			
 			// assign todo list item to the specified project
 			const projectToAssign = projectManager
 				.getProjects()
@@ -129,7 +130,6 @@ function projectListeners() {
 				projectManager.deleteProject(projectToDelete); // delete project
 				if (projectToDelete.selected === true)
 					projectManager.setActive(projectManager.getDefaultProject());
-				console.log(projectManager.getActiveProject());
 				refreshPage(); // Re-render with the rest of the projects
 			} else {
 				alert('Your project has todos left! Delete them first!');
@@ -153,9 +153,4 @@ function refreshPage() {
 	displayManager.showTodos(activeProject.items);
 }
 
-// get Data
-function getProjects() {
-	return projectManager.getProjects();
-}
-
-export { projectListeners, todoListeners, getProjects };
+export { projectListeners, todoListeners };

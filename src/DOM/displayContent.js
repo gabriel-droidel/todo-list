@@ -1,6 +1,5 @@
 import { capitalize } from '../helperFunctions';
-import editProjectForm from './forms/editProjectForm';
-import editTodoForm from './forms/editTodoForm';
+import buttonManager from './forms/generateButtons';
 
 const displayManager = (function () {
 	// handle displaying projects on the main page
@@ -23,12 +22,7 @@ const displayManager = (function () {
 				// prevent buttons on default project
 
 				// change name button
-				const editProjectBtn = document.createElement('button');
-				editProjectBtn.textContent = 'Edit';
-				editProjectBtn.addEventListener('click', () =>
-					editProjectForm(project)
-				);
-				listedProject.appendChild(editProjectBtn);
+				buttonManager.generateEditProjectBtn(listedProject, project);
 
 				//delete button
 				const deleteProjectBtn = document.createElement('button');
@@ -48,7 +42,10 @@ const displayManager = (function () {
 					detail: { id: selectedProjectId },
 				});
 				document.dispatchEvent(eventDetails); // Dispatch the event after it's created
-			} else if (event.target.tagName === 'BUTTON') {
+			} else if (
+				event.target.tagName === 'BUTTON' &&
+				event.target.classList.contains('deleteBtn')
+			) {
 				const eventDetails = new CustomEvent('projectDeleted', {
 					detail: { id: selectedProjectId },
 				});
@@ -62,7 +59,7 @@ const displayManager = (function () {
 		const todoDiv = document.querySelector('.todo-container');
 		const todosContainer = document.createElement('ul');
 		todosContainer.classList.add('todos-list');
-		todoDiv.innerHTML = '';
+		todoDiv.innerHTML = ''; //reset
 		todoDiv.appendChild(todosContainer);
 
 		todoList.forEach((todo) => {
@@ -70,7 +67,7 @@ const displayManager = (function () {
 			const listedTodo = document.createElement('li');
 
 			Object.entries(todo).forEach(([key, value]) => {
-				// generate an item by looping through the properties of each to do
+				// generate an item by looping through the properties
 				if (
 					key !== 'project' &&
 					key !== 'id' &&
@@ -92,11 +89,8 @@ const displayManager = (function () {
 			// Add the class corresponding to the current priority
 			listedTodo.classList.add(`${todo.priority.toLowerCase()}-priority`);
 
-			// edit todo button
-			const editTodoBtn = document.createElement('button');
-			editTodoBtn.textContent = 'Edit';
-			editTodoBtn.addEventListener('click', () => editTodoForm(todo));
-			listedTodo.appendChild(editTodoBtn);
+			//edit button
+			buttonManager.generateEditTodoBtn(listedTodo, todo);
 
 			//delete button
 			const deleteTodoBtn = document.createElement('button');
@@ -113,15 +107,21 @@ const displayManager = (function () {
 			checkbox.checked = todo.completed;
 			listedTodo.append(checkbox);
 
+			// event for deletion button
 			todosContainer.addEventListener('click', (event) => {
 				const selectedTodoId = event.target.value;
-				if (event.target.tagName === 'BUTTON') {
+				if (
+					event.target.tagName === 'BUTTON' &&
+					event.target.classList.contains('deleteBtn')
+				) {
 					const eventDetails = new CustomEvent('todoDeleted', {
 						detail: { id: selectedTodoId },
 					});
 					document.dispatchEvent(eventDetails);
 				}
 			});
+
+			// event for checkbox
 			todosContainer.addEventListener('change', (event) => {
 				const selectedTodoId = event.target.value;
 				if (
@@ -135,6 +135,17 @@ const displayManager = (function () {
 				}
 			});
 		});
+
+		// display message for no existing todo list items
+		if (!todosContainer.firstChild) {
+			const message = document.createElement('p');
+			message.textContent =
+				"It looks like you don't have any todos yet! Buckle up and create some!";
+			message.classList.add('message');
+			// new todo item button
+			buttonManager.generateTodoBtn(message);
+			todosContainer.appendChild(message);
+		}
 	};
 
 	return { showProjects, showTodos };

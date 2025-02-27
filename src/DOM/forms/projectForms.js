@@ -16,7 +16,7 @@ function getProjectForm() {
 	// Add Button
 	const submitProjectBtn = document.createElement('button');
 	submitProjectBtn.textContent = 'Add Project';
-    submitProjectBtn.setAttribute('type', 'submit'); // Make it a submit button
+	submitProjectBtn.setAttribute('type', 'submit'); // Make it a submit button
 
 	submitProjectBtn.addEventListener('click', (e) => {
 		e.preventDefault();
@@ -36,7 +36,8 @@ function getProjectForm() {
 	// Cancel Button
 	const cancelBtn = document.createElement('button');
 	cancelBtn.textContent = 'Cancel';
-	cancelBtn.addEventListener('click', () => {
+	cancelBtn.addEventListener('click', (e) => {
+		e.preventDefault();
 		dialog.close();
 	});
 

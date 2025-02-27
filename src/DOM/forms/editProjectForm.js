@@ -43,13 +43,6 @@ function editProjectForm(project) {
 		dialog.close();
 	});
 
-	// Close the dialog on pressing ESC key without triggering submit or delete
-	dialog.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape') {
-			dialog.close();
-		}
-	});
-
 	form.append(nameInput, submitProjectBtn, cancelBtn);
 	dialog.appendChild(form);
 }
