@@ -70,7 +70,7 @@ function todoListeners() {
 
 			todoManager.switchCompleteStatus(todoToMark);
 			todoToMark.completed;
-			
+
 			refreshPage();
 		});
 	}
@@ -125,9 +125,14 @@ function projectListeners() {
 				.getProjects()
 				.find((p) => p.id === Number(projectId));
 
-			if (projectToDelete) {
+			if (projectToDelete && projectToDelete.items.length === 0) {
 				projectManager.deleteProject(projectToDelete); // delete project
+				if (projectToDelete.selected === true)
+					projectManager.setActive(projectManager.getDefaultProject());
+				console.log(projectManager.getActiveProject());
 				refreshPage(); // Re-render with the rest of the projects
+			} else {
+				alert('Your project has todos left! Delete them first!');
 			}
 		});
 	}

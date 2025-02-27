@@ -8,7 +8,7 @@ const projectManager = (function () {
 	const getProjects = () => [...projects]; // get a copy of the projects array
 
 	const getActiveProject = () =>
-		projects.find((project) => project.selected === true); //get the active project 
+		projects.find((project) => project.selected === true); //get the active project
 
 	const create = (name) => {
 		// create project with input as its name
@@ -26,6 +26,7 @@ const projectManager = (function () {
 
 	const defaultProject = createDefaultProject(); // initialize defaultProject
 
+	const getDefaultProject = () => defaultProject;
 	const setActive = (project) => {
 		// set a project as active on the page
 		const activeProject = projects.find((project) => project.selected);
@@ -55,6 +56,7 @@ const projectManager = (function () {
 		deleteProject,
 		changeName,
 		getActiveProject,
+		getDefaultProject,
 	};
 })();
 
