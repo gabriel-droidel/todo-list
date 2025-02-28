@@ -27,7 +27,7 @@ function todoListeners() {
 				.getProjects()
 				.find((p) => p.id === Number(e.detail.projectId));
 			console.log(todoItem);
-			todoManager.assignProject(todoItem, projectToAssign);
+			projectManager.assignProject(todoItem, projectToAssign);
 			refreshPage(); // reset display
 		});
 	}
@@ -40,7 +40,7 @@ function todoListeners() {
 				.items.find((t) => t.id === Number(todoId));
 
 			if (todoToDelete) {
-				todoManager.deleteTodo(todoToDelete); // delete project
+				projectManager.deleteTodo(todoToDelete); // delete project
 				refreshPage(); // Re-render with the rest of the projects
 			}
 		});
@@ -56,7 +56,7 @@ function todoListeners() {
 				.getProjects()
 				.find((p) => p.id === Number(e.detail.projectId));
 			if (currentProject.id !== projectId)
-				todoManager.changeProject(obj, projectToAssign);
+				projectManager.changeProject(obj, projectToAssign);
 			refreshPage(); // Refresh the UI
 		});
 	}

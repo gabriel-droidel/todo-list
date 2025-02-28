@@ -2,9 +2,8 @@ const projectManager = (function () {
 	// handle project related actions on the back hand for projects
 	let projects = []; // array where all projects are stored
 	let idCounter = 0; // keep track of projects id by assigning them a unique id
-
-	// local storage save function
 	const LOCAL_STORAGE_KEY = 'projects';
+	// local storage save function
 	const saveToLocalStorage = () => {
 		localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(projects));
 	};
@@ -20,7 +19,7 @@ const projectManager = (function () {
 					: 0; // if no existing projects, default to 0
 		}
 	};
-
+	loadFromLocalStorage();
 	const generateID = () => idCounter++; //increment when adding a new ID
 
 	const getProjects = () => [...projects]; // get a copy of the projects array
@@ -49,7 +48,9 @@ const projectManager = (function () {
 		return defaultProjectCreated;
 	};
 
-	const defaultProject = projects.find(project => project.name === 'Default') || createDefaultProject();
+	const defaultProject =
+		projects.find((project) => project.name === 'Default') ||
+		createDefaultProject();
 
 	const getDefaultProject = () => defaultProject;
 
@@ -65,7 +66,9 @@ const projectManager = (function () {
 	const deleteProject = (project) => {
 		// delete a project
 		if (project !== defaultProject) {
-			const projectIndex = projects.findIndex((p) => p.id === project.id);
+			const projectIndex = projects.findIndex(
+				(p) => p.id === Number(project.id)
+			);
 			if (projectIndex != -1) projects.splice(projectIndex, 1);
 		}
 
@@ -82,7 +85,48 @@ const projectManager = (function () {
 		saveToLocalStorage();
 	};
 
-	loadFromLocalStorage();
+	// Project todo related
+	const deleteTodo = (todo) => {
+		// delete todo item
+		console.log(todo);
+		const todoProject = findProjectById(todo.project).items;
+		console.log(todoProject);
+		const todoId = todo.id;
+		const todoIndex = todoProject.findIndex(
+			(todoItem) => todoItem.id === todoId
+		);
+		if (todoIndex !== -1) todoProject.splice(todoIndex, 1);
+
+		saveToLocalStorage();
+	};
+
+	const assignProject = (todo, project) => {
+		// assign a project to a todo list item
+		project.items.push(todo);
+		todo.project = project.id;
+
+		saveToLocalStorage();
+	};
+
+	const changeProject = (todo, newProject) => {
+		// change project of a todo list item
+		const currentProject = findProjectById(todo.project);
+		if (currentProject) {
+			const todoIndex = currentProject.items.findIndex(
+				(todoItem) => todoItem.id === todo.id
+			);
+			console.log(todo.project);
+			if (todoIndex !== -1) {
+				currentProject.items.splice(todoIndex, 1); // Remove the todo from its old project
+			}
+		}
+		assignProject(todo, newProject);
+		saveToLocalStorage();
+	};
+
+	function findProjectById(projectId) {
+		return projects.find((p) => p.id === Number(projectId));
+	}
 
 	return {
 		create,
@@ -93,7 +137,9 @@ const projectManager = (function () {
 		changeName,
 		getActiveProject,
 		getDefaultProject,
-		LOCAL_STORAGE_KEY
+		deleteTodo,
+		assignProject,
+		changeProject,
 	};
 })();
 

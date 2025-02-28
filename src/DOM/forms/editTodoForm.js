@@ -33,8 +33,10 @@ function editTodoForm(todo) {
 
 	// options
 	const selected = document.createElement('option');
-	selected.value = todo.project.id;
-	selected.textContent = todo.project.name;
+	selected.value = todo.project;
+	selected.textContent = projectManager.getProjects().find(
+		(p) => p.id === todo.project
+	).name;
 	selected.classList.add('selected');
 	selectInput.appendChild(selected);
 	const projects = projectManager.getProjects();
