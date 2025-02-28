@@ -14,7 +14,6 @@ function todoListeners() {
 				todoDate = getCurrentDate(); //default to today date
 			}
 			const todoPriority = e.detail.priority;
-			console.log(todoPriority);
 			const todoItem = todoManager.create(
 				todoName,
 				todoDescription,
@@ -25,8 +24,7 @@ function todoListeners() {
 			// assign todo list item to the specified project
 			const projectToAssign = projectManager
 				.getProjects()
-				.find((p) => p.id === Number(e.detail.projectId));
-			console.log(todoItem);
+				.find((p) => p.id === e.detail.projectId);
 			projectManager.assignProject(todoItem, projectToAssign);
 			refreshPage(); // reset display
 		});
@@ -37,7 +35,7 @@ function todoListeners() {
 			const todoId = e.detail.id;
 			const todoToDelete = projectManager
 				.getActiveProject()
-				.items.find((t) => t.id === Number(todoId));
+				.items.find((t) => t.id === todoId);
 
 			if (todoToDelete) {
 				projectManager.deleteTodo(todoToDelete); // delete project
@@ -54,7 +52,7 @@ function todoListeners() {
 
 			const projectToAssign = projectManager
 				.getProjects()
-				.find((p) => p.id === Number(e.detail.projectId));
+				.find((p) => p.id === e.detail.projectId);
 			if (currentProject.id !== projectId)
 				projectManager.changeProject(obj, projectToAssign);
 			refreshPage(); // Refresh the UI
@@ -66,9 +64,9 @@ function todoListeners() {
 			const todoId = e.detail.id;
 			const todoToMark = projectManager
 				.getActiveProject()
-				.items.find((t) => t.id === Number(todoId));
+				.items.find((t) => t.id === todoId);
 
-			todoManager.switchCompleteStatus(todoToMark);
+			projectManager.switchCompleteStatus(todoToMark);
 
 			refreshPage();
 		});
@@ -109,7 +107,7 @@ function projectListeners() {
 			const projectId = e.detail.id;
 			const projectToActivate = projectManager
 				.getProjects()
-				.find((p) => p.id === Number(projectId));
+				.find((p) => p.id == projectId);
 
 			if (projectToActivate) {
 				projectManager.setActive(projectToActivate); // Update active project
@@ -123,7 +121,7 @@ function projectListeners() {
 			const projectId = e.detail.id;
 			const projectToDelete = projectManager
 				.getProjects()
-				.find((p) => p.id === Number(projectId));
+				.find((p) => p.id === projectId);
 
 			if (projectToDelete && projectToDelete.items.length === 0) {
 				projectManager.deleteProject(projectToDelete); // delete project

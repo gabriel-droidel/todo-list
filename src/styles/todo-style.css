@@ -1,0 +1,84 @@
+.selected {
+	background-color: grey;
+}
+
+.low-priority {
+	border-left: 5px solid yellow;
+}
+
+.medium-priority {
+	border-left: 5px solid orange;
+}
+
+.high-priority {
+	border-left: 5px solid red;
+}
+
+.completed {
+	border-left: 5px solid green;
+}
+.todo-container .todo-item {
+	background-color: var(--main-color);
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	padding: 20px 10px;
+	display: grid;
+	grid-template-areas:
+		'check name . .'
+		'. date edit delete';
+	grid-template-columns: 30px 1fr 25px  25px;
+	gap: 2px;
+    border-radius: 20px;
+    align-items: center;
+	min-width: 0; /* Allow the text to shrink properly */
+}
+
+.todo-item input {
+	grid-area: check;
+}
+
+.todo-item p:first-child {
+	grid-area: name;
+	white-space: normal; /* Ensure text can wrap */
+	word-wrap: break-word; /* Break long words if necessary */
+	overflow-wrap: break-word; /* Ensure long words break within container */
+}
+
+.todo-item p:nth-child(2) {
+	grid-area: date;
+}
+
+.todo-item .edit-todo-btn {
+	grid-area: edit;
+}
+
+.todo-item .edit-todo-btn:hover {
+	background-color: var(--main-dark);
+	color: white;
+}
+
+.todo-item .deleteBtn {
+	grid-area: delete;
+}
+
+.todo-item .deleteBtn:hover {
+	background-color: red;
+	color: white;
+}
+.todo-item button {
+	border: none;
+	padding: 5px;
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+.todo-item input[type='checkbox'] {
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	background: white;
+	border-radius: 5px;
+	cursor: pointer;
+}
+input[type='checkbox']:checked {
+	background: var(--main-dark);
+}

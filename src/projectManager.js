@@ -1,7 +1,8 @@
+import { v4 as uuidv4 } from 'uuid'; // generate unique id
+
 const projectManager = (function () {
 	// handle project related actions on the back hand for projects
 	let projects = []; // array where all projects are stored
-	let idCounter = 0; // keep track of projects id by assigning them a unique id
 	const LOCAL_STORAGE_KEY = 'projects';
 	// local storage save function
 	const saveToLocalStorage = () => {
@@ -13,14 +14,11 @@ const projectManager = (function () {
 		const storedProjects = localStorage.getItem(LOCAL_STORAGE_KEY);
 		if (storedProjects) {
 			projects = JSON.parse(storedProjects);
-			idCounter =
-				projects.length > 0
-					? Math.max(...projects.map((project) => project.id)) + 1
-					: 0; // if no existing projects, default to 0
 		}
 	};
+
 	loadFromLocalStorage();
-	const generateID = () => idCounter++; //increment when adding a new ID
+	const generateID = () => `project-${uuidv4()}`; //increment when adding a new ID
 
 	const getProjects = () => [...projects]; // get a copy of the projects array
 
@@ -31,7 +29,7 @@ const projectManager = (function () {
 		// create project with input as its name
 		const project = { name, items: [], id: generateID(), selected: false };
 		projects.push(project);
-
+		console.log(project.id);
 		// save to local storage
 		saveToLocalStorage();
 		return project;
@@ -41,7 +39,7 @@ const projectManager = (function () {
 		// create a default project and set it's selected value as true to be shown as default
 		const defaultProjectCreated = create('Default');
 		defaultProjectCreated.selected = true;
-
+		defaultProjectCreated.id = 'DEFAULT';
 		// save to local storage
 		saveToLocalStorage();
 
@@ -66,12 +64,9 @@ const projectManager = (function () {
 	const deleteProject = (project) => {
 		// delete a project
 		if (project !== defaultProject) {
-			const projectIndex = projects.findIndex(
-				(p) => p.id === Number(project.id)
-			);
+			const projectIndex = projects.findIndex((p) => p.id === project.id);
 			if (projectIndex != -1) projects.splice(projectIndex, 1);
 		}
-
 		// save to local storage
 		saveToLocalStorage();
 	};
@@ -93,7 +88,7 @@ const projectManager = (function () {
 		console.log(todoProject);
 		const todoId = todo.id;
 		const todoIndex = todoProject.findIndex(
-			(todoItem) => todoItem.id === todoId
+			(todoItem) => todoItem.id == todoId
 		);
 		if (todoIndex !== -1) todoProject.splice(todoIndex, 1);
 
@@ -105,6 +100,13 @@ const projectManager = (function () {
 		project.items.push(todo);
 		todo.project = project.id;
 
+		// Sort the project.items array by priority (low < medium < high)
+		const priorityOrder = { Low: 1, Medium: 2, High: 3 };
+
+		project.items.sort((a, b) => {
+			return priorityOrder[b.priority] - priorityOrder[a.priority];
+		});
+
 		saveToLocalStorage();
 	};
 
@@ -113,9 +115,9 @@ const projectManager = (function () {
 		const currentProject = findProjectById(todo.project);
 		if (currentProject) {
 			const todoIndex = currentProject.items.findIndex(
-				(todoItem) => todoItem.id === todo.id
+				(todoItem) => todoItem.id == todo.id
 			);
-			console.log(todo.project);
+
 			if (todoIndex !== -1) {
 				currentProject.items.splice(todoIndex, 1); // Remove the todo from its old project
 			}
@@ -124,8 +126,13 @@ const projectManager = (function () {
 		saveToLocalStorage();
 	};
 
+	const switchCompleteStatus = (todo) => {
+		todo.completed = !todo.completed;
+		saveToLocalStorage();
+	};
+
 	function findProjectById(projectId) {
-		return projects.find((p) => p.id === Number(projectId));
+		return projects.find((p) => p.id == projectId);
 	}
 
 	return {
@@ -140,6 +147,7 @@ const projectManager = (function () {
 		deleteTodo,
 		assignProject,
 		changeProject,
+		switchCompleteStatus,
 	};
 })();
 

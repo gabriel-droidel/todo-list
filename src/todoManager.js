@@ -1,7 +1,6 @@
+import { v4 as uuidv4 } from 'uuid'; // generate unique id
 const todoManager = (function () {
-	let idCounter = 0; // tracker to give each todoItem a unique Id
-
-	const generateID = () => idCounter++; //increment when adding a new ID
+	const generateID = () => `todo-${uuidv4()}`;
 
 	const create = (name, description, dueDate, priority) => {
 		// create a todo list item and track it with a counter
@@ -17,7 +16,6 @@ const todoManager = (function () {
 		return todo;
 	};
 
-	
 	const edit = (todo, name, description, dueDate, priority) => {
 		todo.name = name;
 		todo.description = description;
@@ -25,14 +23,9 @@ const todoManager = (function () {
 		todo.priority = priority;
 	};
 
-	const switchCompleteStatus = (todo) => {
-		todo.completed = !todo.completed;
-	};
-	
 	return {
 		create,
 		edit,
-		switchCompleteStatus,
 	};
 })();
 

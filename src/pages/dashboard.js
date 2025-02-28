@@ -1,4 +1,5 @@
 import '../styles/style.css';
+import '../styles/todo-style.css';
 import projectManager from '../projectManager';
 import displayManager from '../DOM/displayContent';
 import buttonManager from '../DOM/forms/generateButtons';
