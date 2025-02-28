@@ -21,7 +21,7 @@ function todoListeners() {
 				todoDate,
 				todoPriority
 			);
-			
+
 			// assign todo list item to the specified project
 			const projectToAssign = projectManager
 				.getProjects()
@@ -57,7 +57,6 @@ function todoListeners() {
 				.find((p) => p.id === Number(e.detail.projectId));
 			if (currentProject.id !== projectId)
 				todoManager.changeProject(obj, projectToAssign);
-
 			refreshPage(); // Refresh the UI
 		});
 	}
@@ -70,7 +69,6 @@ function todoListeners() {
 				.items.find((t) => t.id === Number(todoId));
 
 			todoManager.switchCompleteStatus(todoToMark);
-			todoToMark.completed;
 
 			refreshPage();
 		});
@@ -81,6 +79,7 @@ function todoListeners() {
 	editTodoItem();
 	markCompleteItem();
 }
+
 function projectListeners() {
 	function createProject() {
 		// get data from form and pass it to the create project function
