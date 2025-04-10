@@ -89,7 +89,8 @@ header {
 	color: white;
 }
 
-.projects-container ul li button {
+.projects-container ul li button,
+.todo-btn {
 	border-radius: 20px;
 	border: none;
 	padding: 5px;
@@ -130,4 +131,7 @@ header button {
 header button:hover {
 	background-color: var(--main-dark);
 	color: white;
+}
+.message {
+	max-width: 100px;
 }
